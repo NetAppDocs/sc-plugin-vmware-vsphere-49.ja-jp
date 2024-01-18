@@ -1,0 +1,183 @@
+---
+sidebar: sidebar 
+permalink: scpivs44_prescripts_and_postscripts.html 
+keywords:  
+summary: カスタムのプリスクリプトとポストスクリプトをデータ保護処理の一部として使用することができます。これらのスクリプトにより、データ保護ジョブの前後の処理を自動化できます。 
+---
+= プリスクリプトとポストスクリプト
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+カスタムのプリスクリプトとポストスクリプトをデータ保護処理の一部として使用することができます。これらのスクリプトにより、データ保護ジョブの前後の処理を自動化できます。たとえば、データ保護ジョブのエラーや警告を自動的に通知するスクリプトを組み込むことができます。プリスクリプトとポストスクリプトを設定する前に、スクリプトを作成するための要件を理解しておく必要があります。
+
+
+
+== サポートされているスクリプトタイプ
+
+Perl スクリプトとシェルスクリプトがサポートされています。
+シェルスクリプトはで始まる必要があります `!/bin/bash`。 (`!/bin/sh` はサポートされていません）。
+
+
+
+== スクリプトパスの場所
+
+プリスクリプトとポストスクリプトは、 SnapCenter Plug-in for VMware vSphere によって実行されます。そのため、スクリプトは SnapCenter Plug-in for VMware vSphere OVA にあり、実行権限が必要です。
+
+例：
+* Perlスクリプトパスはです `/support/support/script.pl`
+*シェルスクリプトパスはの場合があります `/support/support/script.sh`
+
+スクリプトパスは、スクリプト実行時に検証されます。
+
+
+
+== スクリプトを指定する場所
+
+スクリプトはバックアップポリシーに指定します。バックアップジョブが開始されると、ポリシーによってスクリプトがバックアップ対象のリソースに自動的に関連付けられます。
+
+複数のスクリプトを指定するには、スクリプトパスの入力後に * Enter キーを押し、スクリプトごとに改行します。セミコロン（ ; ）は使用できません。プリスクリプトとポストスクリプトをそれぞれ複数指定できます。1 つのスクリプトをプリスクリプトとポストスクリプトの両方として作成し、そのスクリプトから他のスクリプトを呼び出すことができます。
+
+
+
+== スクリプトが実行されるタイミング
+
+スクリプトは、 Backup_phase に設定された値に従って実行されます。
+
+* Backup_phase = pre_backup
++
+処理の PRE_BACKUP フェーズでプリスクリプトが実行されます。
+
+
+
+
+NOTE: プリスクリプトが失敗すると、バックアップは正常に完了し、警告メッセージが送信されます。
+
+* BACKUP_PHASE=POST_BACKUP または BACKUP_PHASE=FAILED_BACKUP
++
+ポストスクリプトは、バックアップが正常に完了したあとに処理の POST_BACKUP フェーズで実行されます。バックアップが正常に完了しない場合は、 FAILED_BACKUP フェーズで実行されます。
+
+
+
+
+NOTE: ポストスクリプトが失敗すると、バックアップは正常に完了し、警告メッセージが送信されます。
+
+次の項目をチェックして、スクリプトの値が入力されていることを確認します。
+* Perlスクリプトの場合： `/support/support/log_env.log`
+*シェルスクリプトの場合： `/support/support/log_file.log`
+
+
+
+== スクリプトに渡される環境変数
+
+次の表に示す環境変数をスクリプトで使用できます。
+
+|===
+| 環境変数 | 説明 
+
+
+| `BACKUP_NAME` | バックアップの名前。
+ポストスクリプトでのみ渡される変数です。 
+
+
+| `BACKUP_DATE` | バックアップの日付。形式はです `yyyymmdd`
+ポストスクリプトでのみ渡される変数です。 
+
+
+| `BACKUP_TIME` | の形式で指定されたバックアップの時刻 `hhmmss`
+ポストスクリプトでのみ渡される変数です。 
+
+
+| `BACKUP_PHASE` | スクリプトを実行するバックアップのフェーズ。
+有効な値は次のとおりです。 `PRE_BACKUP, POST_BACKUP, and FAILED_BACKUP`。
+プリスクリプトとポストスクリプトで渡される変数です。 
+
+
+| `STORAGE_SNAPSHOTS` | バックアップ内のストレージ Snapshot の数。
+ポストスクリプトでのみ渡される変数です。 
+
+
+| `STORAGE_SNAPSHOT.#` | 次の形式で指定された定義済みのストレージSnapshotの1つ。
+`<filer>:/vol/<volume>:<ONTAP-snapshot-name>`
+ポストスクリプトでのみ渡される変数です。 
+
+
+| `VIRTUAL_MACHINES` | バックアップ内の VM の数。
+プリスクリプトとポストスクリプトで渡される変数です。 
+
+
+| `VIRTUAL_MACHINE.#` | 次の形式で指定された定義済み仮想マシンの1つ。
+`<VM name>[vertical bar]<VM UUID>[vertical bar]<power-state>[vertical bar]<VM snapshot>[vertical bar]<ip-addresses>
+<power-state> has the values POWERED_ON, POWERED_OFF, or
+SUSPENDED`
+`<VM snapshot>` の値を指定します `true` または `false`
+プリスクリプトとポストスクリプトで渡される変数です。 
+|===
+
+
+== スクリプトのタイムアウト
+
+バックアップスクリプトのタイムアウトは 15 分です。この値は変更できません。
+
+
+
+== Perl スクリプトの例 1.
+
+次に、 Perl スクリプトの例を示します。バックアップの実行時に環境変数が出力されます。
+
+`#!/usr/bin/perl`
+`use warnings;`
+`use strict;`
+`my $argnum;`
+`my $logfile = '/support/support/log_env.log';`
+`open (FH, '>>', $logfile) or die $!;`
+`foreach (sort keys %ENV) {`
+`print FH "$_ = $ENV{$_}\n";`
+`}`
+`print FH "=========\n";`
+`close (FH);`
+
+
+
+== Perlスクリプトの例2
+
+次の例は、バックアップに関する情報を出力します。
+
+`#!/usr/bin/perl`
+`use warnings;`
+`use strict;`
+
+`my $argnum;`
+`my $logfile = '/support/support/log_env.log';`
+`open (FH, '>>', $logfile) or die $!;`
+
+`print FH "BACKUP_PHASE is $ENV{'BACKUP_PHASE'}\n";`
+`print FH "Backup name  $ENV{'BACKUP_NAME'}\n";`
+`print FH "Virtual Machine  $ENV{'VIRTUAL_MACHINES'}\n";`
+`print FH "VIRTUAL_MACHINE # is $ENV{'VIRTUAL_MACHINE.1'}\n";`
+`print FH "BACKUP_DATE is $ENV{'BACKUP_DATE'}\n";`
+`print FH "BACKUP_TIME is $ENV{'BACKUP_TIME'}\n";`
+`print FH "STORAGE_SNAPSHOTS is $ENV{'STORAGE_SNAPSHOTS'}\n";`
+`print FH "STORAGE_SNAPSHOT # is $ENV{'STORAGE_SNAPSHOT.1'}\n";`
+
+`print FH "PWD is $ENV{'PWD'}\n";`
+`print FH "INVOCATION_ID is $ENV{'INVOCATION_ID'}\n";`
+
+`print FH "=========\n";`
+`close (FH);`
+
+
+
+== シェルスクリプトの例
+
+
+`===============================================`
+`#!/bin/bash`
+`echo Stage $BACKUP_NAME >> /support/support/log_file.log`
+`env >> /support/support/log_file.log`
+`===============================================`

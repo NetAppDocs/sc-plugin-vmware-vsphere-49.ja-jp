@@ -1,0 +1,48 @@
+---
+sidebar: sidebar 
+permalink: scpivs44_add_multiple_vms_and_datastores_to_a_resource_group.html 
+keywords:  
+summary: SnapCenter のVMware vSphere Clientのリソースグループの編集ウィザードを使用して、既存のリソースグループに複数のリソースを追加できます。 
+---
+= リソースグループに複数の VM とデータストアを追加する
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+SnapCenter VMware vSphere Clientの[Edit Resource Group]ウィザードを使用して、既存のリソースグループに複数のリソースを追加できます。
+
+リソースグループには、次のいずれかを含めることができます。
+
+* 従来の VM と SAN および NAS のデータストアを任意に組み合わせたもの（ VVol データストアはサポートされません）。
+* 1 つの FlexGroup データストア（複数の VM のスパニングはサポートされていません）。
+* 1 つ以上の FlexVol データストア（複数の VM のスパニングがサポートされます）。
+* 1 つ以上の VVol VM が必要です。
+* 指定した vCenter タグを使用するすべての VVol VM 。
+* 指定したフォルダ内のすべての VVol VM 。
+
+
+
+NOTE: 複数のVVolデータストアにまたがるVVol VM SnapCenter は、プライマリまたは選択したVVolデータストアにのみバックアップされるため、サポートされません。
+
+.手順
+. SCVプラグインの左側の[Navigator（ナビゲーター）]ペインで、[*リソースグループ（* Resource Groups）]をクリックし、リソースグループを選択して、をクリックします image:scpivs44_image39.png["編集アイコン"] * リソースグループを編集 * してウィザードを開始します。
+. [* リソース *] ページで、次の操作を実行します。
++
+.. Datastores フィールドで、追加する VM またはデータストアに移動します。
+.. 使用可能なエンティティのリストで、リソースグループに追加する VM またはデータストアを 1 つ以上選択し、 * > * をクリックして選択したエンティティを選択リストに移動します。使用可能なすべてのエンティティを移動するには、*>>*をクリックします。
++
+デフォルトでは、使用可能なエンティティリストには、 Datacenter オブジェクトが表示されます。データストアをクリックすると、データストア内の VM を表示してリソースグループに追加できます。
+
++
+[Next] をクリックすると、 SnapCenter が管理していること、および選択した VM またはデータストアが配置されているストレージとの互換性があることが最初に確認されます。というメッセージが表示されます `Some entities are not SnapCenter compatible` が表示された場合、選択したVMまたはデータストアにSnapCenter との互換性がありません。を参照してください link:scpivs44_create_resource_groups_for_vms_and_datastores.html#manage-compatibility-check-failures["互換性チェックの失敗を管理します"] を参照してください。
+
+
+
+. 追加する VM またはデータストアごとに手順 2 を繰り返します。
+. 「 * 次へ * 」をクリックして、「 * 概要 * 」ページに移動し、サマリーを確認して「 * 完了 * 」をクリックします。
+

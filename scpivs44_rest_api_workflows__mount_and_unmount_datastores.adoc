@@ -1,0 +1,72 @@
+---
+sidebar: sidebar 
+permalink: scpivs44_rest_api_workflows__mount_and_unmount_datastores.html 
+keywords:  
+summary: SnapCenter Plug-in for VMware vSphere REST API を使用してデータストアのバックアップのマウントやアンマウントの処理を実行するには、規定された順序で REST API 呼び出しを実行する必要があります。 
+---
+= REST API のワークフローを使用してデータストアをマウントおよびアンマウントできます
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+SnapCenter Plug-in for VMware vSphere REST API を使用してデータストアのバックアップのマウントやアンマウントの処理を実行するには、規定された順序で REST API 呼び出しを実行する必要があります。
+
+各REST APIに、を追加します `https://<server>:<port>` を使用して完全なエンドポイントを形成します。
+
+
+
+== データストアをマウントするには、次のワークフローを実行します。
+
+|===
+| ステップ | REST API | コメント 
+
+
+| 1. | に進みます `http://<vCenter-IP>/mob` | VMware Managed Objects の URL からデータストア MORef を探します。
+マウントするデータストアの * MORef * をメモします。 
+
+
+| 2. | `/4.1/datastores/{moref}/
+backups` | `Get the list of backups for a datastore` 指定したデータストアのバックアップのリストを取得します。
+手順 1 から * MORef * を渡します。
+マウントする * backupid * をメモします。 
+
+
+| 3. | `/4.1/datastores/backups/
+{backupId}/snapshotlocators` | `Get the list of Snapshot Locations` 指定したバックアップの場所に関する詳細情報を取得します。
+手順 2 から * backupid * を渡します。
+データストア*と* snapshotLocationsList *リストの場所をメモします。 
+
+
+| 4. | `/4.1/datastores/{moref}/
+availableEsxHosts` | `Get the list of Available Esxi Hosts` マウント処理に使用できるESXiホストのリストを取得します。
+手順 1 から * MORef * を渡します。
+入手可能な EsxHostsList* 情報に注意してください。 
+
+
+| 5. | `/4.1/datastores/backups/
+{backupId}/mount` | `Mount datastores for a backup` 指定したデータストアバックアップをマウントします。
+手順 2 から * backupid * を渡します。
+データストア*属性と*場所*属性で、からの情報を渡します `snapshotLocationsList` 手順3で、
+「 * esxHostName * 」属性で、手順 4 の「 available EsxHostsList 」からの情報を渡します。 
+|===
+
+
+== データストアをアンマウントするワークフローは次のとおりです。
+
+|===
+| ステップ | REST API | コメント 
+
+
+| 1. | `/4.1/datastores/backups/
+{backupId}/mounted` | `Get the list of mounted datastores`。
+アンマウントするデータストア * MORef * をメモします。 
+
+
+| 2. | `/4.1/datastores/unmount` | `UnMount datastores for a backup` 指定したデータストアバックアップをアンマウントします。
+手順 1 からデータストア * MORef * を渡します。 
+|===

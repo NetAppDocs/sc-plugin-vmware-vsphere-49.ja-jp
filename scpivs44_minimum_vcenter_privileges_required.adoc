@@ -1,0 +1,112 @@
+---
+sidebar: sidebar 
+permalink: scpivs44_minimum_vcenter_privileges_required.html 
+keywords:  
+summary: SnapCenter Plug-in for VMware vSphere の導入を開始する前に、最小限必要な vCenter 権限があることを確認する必要があります。 
+---
+= 最小限の vCenter 権限が必要です
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+SnapCenter Plug-in for VMware vSphere の導入を開始する前に、最小限必要な vCenter 権限があることを確認する必要があります。
+
+
+
+== vCenter Admin ロールに必要な権限
+
+Datastore.AllocateSpaceをクリックします
+データストア参照
+データストア。削除
+Datastore.FileManagementの略
+データストア移動
+データストア名を変更します
+Extension.Register
+Extension.Unregister
+Extension.Update
+Host.Config.AdvancedConfig
+Host.Config.Resources
+Host.Config.Settings（ホスト設定）
+Host.Config.Storageの略
+Host.Local.CreateVM
+Host.Local.deleteVM
+Host.Local.ReconfigVM
+ネットワーク割り当て
+Resource.ApplyRecommendationを参照してください
+Resource.AssignVMToPool
+Resource.ColdMigrate
+Resource.HotMigrate
+Resource.QueryVMotionの略
+System.Anonymous（システム匿名）
+システム。読み取り
+システムビュー
+タスク。作成
+Task.Update（タスク更新）
+VirtualMachine.Config.AddExistingDisk
+VirtualMachine.Config.AddNewDisk
+VirtualMachine.Config.AdvancedConfig
+VirtualMachine.Config.ReloadFromPath
+VirtualMachine.Config.RemoveDisk
+VirtualMachine.Config.Resource
+VirtualMachine.GuestOperations.Execute.
+VirtualMachine.GuestOperations.Modify
+VirtualMachine.GuestOperations.Query
+VirtualMachine.interact.poweroff
+VirtualMachine.interact.PowerOn
+VirtualMachine.Inventory.Create
+VirtualMachine.Inventory.CreateFromExisting
+VirtualMachine.Inventory.Delete
+VirtualMachine.Inventory.Move
+VirtualMachine.Inventory.Register
+VirtualMachine.Inventory.Unregister
+VirtualMachine.State.createsnapshot
+VirtualMachine.State.RemoveSnapshot
+VirtualMachine.State.RevertToSnapshot
+
+
+
+== SnapCenter Plug-in for VMware vCenter に固有の必要な権限
+
+|===
+
+
+| * 特権 * | *ラベル* 
+
+
+| netappSCV。Guest。RestoreFile | ゲストファイルのリストア 
+
+
+| netappSCV。Recovery).MountUnmount | mount / Unmount 
+
+
+| SCV。Backup.DeleteBackupJobを指定します | リソースグループ/バックアップを削除します 
+
+
+| netappSCV。Configure.ConfigureStorageSystems.Deleteの順にクリックします | ストレージシステムを削除 
+
+
+| netappSCV。ビュー | 表示 
+
+
+| SCV。リカバリ。RecoverVMを指定します | VMをリカバリします 
+
+
+| netappSCV。Configure.ConfigureStorageSystems.AddUpdateを実行します | ストレージシステムを追加/変更 
+
+
+| netappSCV。Backup.BackupNow | 今すぐバックアップする 
+
+
+| netappSCV。Guest。設定 | ゲストの設定 
+
+
+| netappSCV。Configure.ConfigureSnapCenterServerを実行します | SnapCenter サーバを設定します 
+
+
+| 必要なバックアップスケジュールを設定します | リソースグループを作成します 
+|===

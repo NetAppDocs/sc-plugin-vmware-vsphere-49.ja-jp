@@ -1,0 +1,47 @@
+---
+sidebar: sidebar 
+permalink: scpivs44_restore_from_backups_overview.html 
+keywords:  
+summary: プライマリバックアップまたはセカンダリバックアップから VM 、 VMDK 、ファイル、およびフォルダをリストアできます。 
+---
+= リストアの概要
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+プライマリバックアップまたはセカンダリバックアップから VM 、 VMDK 、ファイル、およびフォルダをリストアできます。
+
+* VM リストア先
++
+従来の VM は、元のホスト、同じ vCenter Server の別のホスト、または同じ vCenter またはリンクモードの任意の vCenter で管理されている別の ESXi ホストにリストアできます。
+
++
+VVOL VM は元のホストにリストアできます。
+
+* VMDKリストア先
++
+従来の VM の VMDK を、元のデータストアまたは別のデータストアにリストアできます。
+
++
+VVOL VM の VMDK を元のデータストアにリストアできます。
+
+
+
+また、ゲストファイルのリストアセッションで個々のファイルやフォルダをリストアすることもできます。リストアセッションでは、仮想ディスクのバックアップコピーを接続し、選択したファイルやフォルダをリストアします。
+
+次の項目はリストアできません。
+
+* データストア
++
+SnapCenter Plug-in for VMware vSphere を使用してデータストアをリストアすることはできません。データストア内の個々の VM のみをリストアする必要があります。
+
+* 削除された VM のバックアップ
++
+削除された Storage VM のバックアップをリストアすることはできません。たとえば、管理 LIF を使用して Storage VM を追加してバックアップを作成したあとに、その Storage VM を削除してその Storage VM を含むクラスタを追加すると、バックアップのリストア処理は失敗します。
+
+

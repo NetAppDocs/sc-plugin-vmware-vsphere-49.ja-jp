@@ -1,0 +1,71 @@
+---
+sidebar: sidebar 
+permalink: scpivs44_rest_api_workflow__restore_vmdks.html 
+keywords:  
+summary: SnapCenter Plug-in for VMware vSphere REST API を使用して VMDK のリストア処理を実行するには、規定された順序の REST API 呼び出しに従う必要があります。 
+---
+= VMDK をリストアするための REST API のワークフロー
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+SnapCenter Plug-in for VMware vSphere REST API を使用して VMDK のリストア処理を実行するには、規定された順序の REST API 呼び出しに従う必要があります。
+
+各REST APIに、を追加します `https://<server>:<port>` を使用して完全なエンドポイントを形成します。
+
+|===
+| ステップ | REST API | コメント 
+
+
+| 1. | に進みます `http://<vCenter-IP>/mob` | VMware Managed Objects の URL から VM MORef を検索します。
+VMDK が配置されている VM の * MORef * をメモします。 
+
+
+| 2. | `/4.1/vm/{moref}/backups` | `Get VM Backups` 指定したVMのバックアップのリストを取得します。
+手順 1 から * MORef * を渡します。
+リストアするバックアップの * backupid * をメモします。 
+
+
+| 3. | `/4.1/vm/backups/{backupId}/
+snapshotlocations` | `Get snapshot locations` 指定したバックアップのSnapshotコピーの場所を取得します。
+手順 2 から * backupid * を渡します。
+この *snapshotsList* 情報に注意してください。 
+
+
+| 4. | `/4.1/vm/{moref}/backups/
+vmdklocations` | `Get Vmdk Locations` VMDKのリストを取得します
+（指定したVMの）。
+*vmdkLocationsList* 情報に注意してください。 
+
+
+| 5. | `/4.1/vm/{ moref}/backups/
+{backupId}/
+availabledatastores` | `Get Available Datastores` リストア処理に使用できるデータストアのリストを取得します。
+手順 1 から * MORef * を渡します。
+手順 2 から * backupid * を渡します。
+DatastoreNameList * の情報をメモしてください。 
+
+
+| 6. | `/4.1/vm/{moref}/backups/
+availableesxhosts` | `Get available ESX Hosts` バックアップが格納されているホストの情報を取得します。
+手順 1 から * MORef * を渡します。
+入手可能な EsxHostsList* 情報に注意してください。 
+
+
+| 7. | `/4.1/vm/{moref}/backups/
+{backupId}/restorevmdks`  a| 
+`Restore a VMDK from a backup` 指定したバックアップから指定したVMDKをリストアします。
+「 * esxHost* 」属性で、手順 6 の「 *availableEsHostsList* 」からの情報を渡します。
+手順 3 から 5 までの情報を *vmdkRestoreLocations* 属性に渡します。
+
+* restoreFromLocation 属性で、手順 3 の snapshotLocationsList からの情報を渡します。
+* vmdkToRestore 属性で、手順 4 の vmdkLocationsList からの情報を渡します。
+* restoreToDatastore 属性で、手順 5 の DatastoreNameList から情報を渡します。
+
+
+|===
