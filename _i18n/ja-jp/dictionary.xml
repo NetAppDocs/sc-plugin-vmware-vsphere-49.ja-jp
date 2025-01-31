@@ -1033,7 +1033,6 @@ VirtualMachine.State.RevertToSnapshot</block>
   <block id="6d2bf94f38d1fdf840fe9b231866899c" category="doc">導入の概要</block>
   <block id="8c5a46f2b9b85dd307d50498933fef6a" category="paragraph">既存の SnapCenter ユーザは、新しい SnapCenter ユーザとは異なる導入ワークフローを使用する必要があります。</block>
   <block id="35b654fd14f12a33551c1993b5321fcb" category="summary">SnapCenter Plug-in for VMware vSphere （ SCV ）は Linux ベースの仮想アプライアンスです。スタンドアロン構成として、 VM 、データストア、および VMDK の高速でスペース効率に優れた、クラッシュ整合性のある、 VM と整合性のあるバックアップおよびリストア処理を実現します。また、 SnapCenter Server と連携して、 SnapCenter アプリケーション固有のプラグインを対象とした VMware 環境でのアプリケーションベースのバックアップおよびリストア処理もサポートします。</block>
-  <block id="8c3d0c00ea667e3e0723e5cdc6473a09" category="doc">SnapCenter Plug-in for VMware vSphere のドキュメント</block>
   <block id="0732e8e379c23dc5fb5e0055374a7f1d" category="summary">SnapCenter VMware vSphere Clientが正しく動作しない場合は、ブラウザキャッシュのクリアが必要になることがあります。問題が解決しない場合は、 Web Client Service を再起動します。</block>
   <block id="ae6aa491e5b4d2d79971ced34f86c80e" category="section-title">Linux vCenterでVMware vSphere Client Serviceを再起動します</block>
   <block id="e570bf7b85385c5bda85ef035051e28f" category="paragraph">vCenter 7.0U1以降が実行されている必要があります。</block>
@@ -2407,4 +2406,5 @@ IPv6の例：<block ref="f7a108079a0dc952ef09921776f4796f" prefix=" " category="
   <block id="c257f5c852c12409e63afb17104f69c5" category="sidebar">REST API</block>
   <block id="a3d53cfe9124531cb5f9bbfefe704326" category="sidebar">REST API のワークフローを使用して組み込みのスケジュールを変更できます</block>
   <block id="3da6944b1baaec4beb70694ac307fd1f" category="sidebar">同じリリースの新しいパッチにアップグレードします</block>
+  <block id="147e8233cabd13a871f077b92a377a39" category="sidebar">SnapCenter Plug-in for VMware vSphere 4.9のドキュメント</block>
 </blocks>
